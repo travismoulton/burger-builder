@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -94,17 +95,8 @@ class ContactData extends Component {
     }
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.price,
+      price: this.props.totalPrice,
       orderData: formData,
-      customer: {
-        name: 'Travis',
-        address: {
-          street: '46 Roosevelt Rd',
-          zipCode: '02188',
-          country: 'America',
-        },
-        email: 'travis.moulton002@gmail.com',
-      },
       deliveryMethod: 'fastest',
     };
     axios
@@ -164,7 +156,6 @@ class ContactData extends Component {
 
     let form = (
       <form onSubmit={this.orderHandler}>
-        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
         {formElementsArr.map((el) => {
           return (
             <Input
@@ -196,4 +187,8 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = (state) => {
+  return { ingredients: state.ingredients, totalPrice: state.totalPrice };
+};
+
+export default connect(mapStateToProps)(ContactData);
