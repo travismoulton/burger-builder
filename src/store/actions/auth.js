@@ -1,23 +1,36 @@
 import axios from 'axios';
-import * as actiontTypes from './actionsTypes';
+import * as actionTypes from './actionsTypes';
 
 export const authStart = () => {
   return {
-    type: actiontTypes.AUTH_START,
+    type: actionTypes.AUTH_START,
   };
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (tokenId, userId) => {
   return {
-    type: actiontTypes.AUTH_SUCCESS,
-    authData,
+    type: actionTypes.AUTH_SUCCESS,
+    tokenId,
+    userId,
   };
 };
 
 export const authFail = (error) => {
   return {
-    type: actiontTypes.AUTH_FAIL,
+    type: actionTypes.AUTH_FAIL,
     error,
+  };
+};
+
+export const logout = () => {
+  return { type: actionTypes.AUTH_LOGOUT };
+};
+
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime * 1000);
   };
 };
 
@@ -34,12 +47,12 @@ export const auth = (email, password, isSignup) => {
     axios
       .post(url, authData)
       .then((res) => {
-        console.log(res);
-        dispatch(authSuccess(res.data));
+        dispatch(authSuccess(res.data.idToken, res.data.localId));
+        dispatch(checkAuthTimeout(res.data.expiresIn));
       })
       .catch((err) => {
         console.log(err);
-        dispatch(authFail());
+        dispatch(authFail(err.response.data.error));
       });
   };
 };
