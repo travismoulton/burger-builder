@@ -7,6 +7,7 @@ import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions/index';
+import { checkValidityHandler } from '../../shared/utility';
 
 class Auth extends Component {
   state = {
@@ -48,31 +49,13 @@ class Auth extends Component {
       this.props.onSetAuthRedirectPath();
   }
 
-  checkValidityHandler(value, rules) {
-    let isValid = true;
-
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    return isValid;
-  }
-
   inputChangedHandler = (e, ctrlName) => {
     const updatedControls = {
       ...this.state.controls,
       [ctrlName]: {
         ...this.state.controls[ctrlName],
         value: e.target.value,
-        valid: this.checkValidityHandler(
+        valid: checkValidityHandler(
           e.target.value,
           this.state.controls[ctrlName].validation
         ),

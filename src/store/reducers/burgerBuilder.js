@@ -1,6 +1,5 @@
-import { act } from '@testing-library/react';
 import * as actionTypes from '../actions/actionsTypes';
-import { updateObject } from '../utility';
+import { updateObject } from '../../shared/utility';
 
 const initialState = {
   ingredients: null,
