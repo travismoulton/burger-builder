@@ -9,9 +9,8 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 import * as actions from '../../store/actions/index';
-import { initIngredients } from '../../store/actions';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     purchasing: false,
   };
@@ -21,14 +20,16 @@ class BurgerBuilder extends Component {
   }
 
   updatePurchaseState(ingredients) {
-    const sum = Object.keys(ingredients)
-      .map((igKey) => {
-        return ingredients[igKey];
-      })
-      .reduce((sum, el) => {
-        return sum + el;
-      }, 0);
-    return sum > 0;
+    if (ingredients) {
+      const sum = Object.keys(ingredients)
+        .map((igKey) => {
+          return ingredients[igKey];
+        })
+        .reduce((sum, el) => {
+          return sum + el;
+        }, 0);
+      return sum > 0;
+    }
   }
 
   purchaseHandler = () => {
