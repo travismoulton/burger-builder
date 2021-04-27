@@ -28,6 +28,8 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
+console.log(store);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
